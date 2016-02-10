@@ -8,7 +8,6 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
 
 import chords.Chord;
-import chords.ChordGeneration;
 import chords.InitChordCollection;
 import chords.InterMod;
 import chords.LoadInter;
@@ -20,6 +19,7 @@ import player.ThreadedNotePlayer;
 import rythm.Rythm;
 import rythm.TimeSignature;
 import scales.Scale;
+import markovChain.Markov;
 import modes.Mode;
 import note.HarmonicNote;
 import note.Note;
@@ -28,7 +28,7 @@ import note.RythmicNote;
 public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
-		LoadInter inter = new LoadInter("chords.txt");
+		/*LoadInter inter = new LoadInter("chords.txt");
 		
 		inter.Load("chords.txt");
 		//System.out.println(inter);
@@ -49,7 +49,20 @@ public class Main {
 		cg.deux_cinq_un();
 		
 		p.fill(cg.getChords().getHarmonizedChords());
-		p.run();
+		p.run();*/
+		
+		Markov mar = new Markov(10);
+		mar.addLink(0, 0, 50);
+		mar.addLink(0, 1, 50);
+		mar.addLink(1, 0, 50);
+		mar.addLink(1, 2, 50);
+		mar.addLink(2, 2, 50);
+		mar.addLink(2, 3, 50);
+		
+
+
+
+		
 	}
 
 }
