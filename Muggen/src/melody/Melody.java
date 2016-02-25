@@ -21,7 +21,12 @@ public class Melody {
 	}
 	
 	public void add(RythmicNote note){
-		melody.addFirst(note);
+		melody.addLast(note);
+	}
+
+	@Override
+	public String toString() {
+		return "Melody [melody=" + melody + "]";
 	}
 
 }

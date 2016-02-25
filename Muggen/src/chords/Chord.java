@@ -68,7 +68,6 @@ public class Chord {
 			this.notes.add(fundamental);
 			
 		}
-		System.out.println(mod.getName());
 		
 	}
 	public ArrayList<RythmicNote> toRythmicNote(){

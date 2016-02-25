@@ -14,6 +14,10 @@ public class Markov {
 	public int[][] getMatTrans() {
 		return matTrans;
 	}
+	
+	public int getid(int in, int out){
+		return matTrans[in][out];
+	}
 	public void setMatTrans(int[][] matTrans) {
 		this.matTrans = matTrans;
 	}
@@ -42,12 +46,21 @@ public class Markov {
 		}
 	}
 	
+	
 	@Override
 	public String toString() {
-		return "Markov [matTrans=" + Arrays.toString(matTrans) + ", size="
-				+ size + "]";
+		
+		String chaine = "mat : ";
+		for(int i=0;i<size;i++){
+			for(int j = 0 ; j< size;j++){
+				chaine = chaine + ',' + matTrans[i][j];
+			}
+			chaine = chaine + System.getProperty("line.separator"); 
+				
+		}
+		return chaine;
 	}
-	private void init(){
+	public void init(){
 		for(int i=0 ; i< size;i++){
 			for(int j=0;j<size;j++){
 				matTrans[i][j]=0;

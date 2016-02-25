@@ -15,16 +15,20 @@ public class ThreadedNotePlayer{
 		thread = new Thread(player);
 	}
 	
-	public void play(LinkedList<RythmicNote> notes){
-		player.fill(notes);
+	public void Create_Process(){
 		thread.start();
 	}
 	
+	public void Create_Process(LinkedList<RythmicNote> notes){
+		player.fill(notes);
+		thread.start();
+
+	}
 	public void stop(){
 		thread.interrupt();
 	}
 	
-	public Player getChordPlayer(){
+	public NotePlayer getChordPlayer(){
 		
 		return this.player;
 	}

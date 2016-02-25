@@ -67,7 +67,8 @@ public class Player{
 	}
 	
 	public void play(Chord chord,int nbr)throws InterruptedException {
-		long timer = (long)rythm.convertTime(3);
+		
+		long timer = (long)rythm.convertTime(4);
 		for(int i=0;i<nbr;i++){
 			for(HarmonicNote note : chord.getNotes()){
 				midiChannel.noteOn(note.getHeight(), 60);
@@ -75,7 +76,6 @@ public class Player{
 			TimeUnit.MILLISECONDS.sleep(timer);
 			midiChannel.allNotesOff();
 		}
-		
 	}
 	
 	public void stopPlayer(){

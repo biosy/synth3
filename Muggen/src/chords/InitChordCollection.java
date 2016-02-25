@@ -55,7 +55,7 @@ public class InitChordCollection {
 		
 		note = new HarmonicNote(scale.getDegree(5).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("minor"));
+		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
 		chords.add(ch);		
 				
 	}

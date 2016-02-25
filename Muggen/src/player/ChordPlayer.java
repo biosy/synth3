@@ -17,8 +17,11 @@ public class ChordPlayer extends Player implements Runnable{
 	@Override
 	public void run(){
 		try{
-			while(!chords.isEmpty()){ //Tant que la liste n'est pas vide, on la lit.
-				play(chords.removeFirst(),3);
+			int i=0;
+			while(i<10){ //Tant que la liste n'est pas vide, on la lit.
+				for(int j=0;j<chords.size();j++)
+					play(chords.get(j),1);
+				i++;
 			}
 		}catch(InterruptedException e){
 			e.printStackTrace();
@@ -27,4 +30,6 @@ public class ChordPlayer extends Player implements Runnable{
 	public void fill(LinkedList<Chord> chords){
 		this.chords = chords;
 	}
+
+		
 }
