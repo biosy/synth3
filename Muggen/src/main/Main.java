@@ -17,6 +17,7 @@ import scales.Scale;
 import melody.MelodyGeneration;
 import modes.Mode;
 import musicGeneration.PlayerAll;
+import musicGeneration.PlayerType;
 import note.HarmonicNote;
 
 public class Main {
@@ -87,9 +88,9 @@ public class Main {
 			th.play(cg.getCollection().getChords().getHarmonizedChords());
 			tn.Create_Process(melo.getMelody().getMelody());
 */
-		PlayerAll p  = new PlayerAll(new Scale(new HarmonicNote(60), new Mode(5)), 0, 72,4);
-		p.play();
-	
+	PlayerType pl = new PlayerType(0);
+	pl.randomize();
+	pl.play();
 
 		
 		

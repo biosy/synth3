@@ -24,13 +24,14 @@ public class PlayerAll {
 	private int instruChord;
 	private int instruMelody;
 	private int seuil;
-	public PlayerAll(Scale scale, int instruChord, int instruMelody, int seuil){
-		 th = new ThreadedChordPlayer(new ChordPlayer(0, instruChord, new Rythm(new TimeSignature(4, 4, 120))));
-		 tn = new ThreadedNotePlayer(new NotePlayer(1, instruMelody, new Rythm(new TimeSignature(4, 4, 120))));
-		 td = new ThreadedNotePlayer(new NotePlayer(2, 0, new Rythm(new TimeSignature(4, 4, 120))));
+	private int tempo;
+	public PlayerAll(Scale scale, int instruChord, int instruMelody, int seuil, int tempo){
+		 th = new ThreadedChordPlayer(new ChordPlayer(0, instruChord, new Rythm(new TimeSignature(4, 4, tempo))));
+		 tn = new ThreadedNotePlayer(new NotePlayer(1, instruMelody, new Rythm(new TimeSignature(4, 4, tempo))));
+		 td = new ThreadedNotePlayer(new NotePlayer(2, 0, new Rythm(new TimeSignature(4, 4, tempo))));
 
 		 this.seuil = seuil;
-		music = new MusicGeneration(scale, new Rythm(new TimeSignature(4, 4, 120)),seuil);
+		music = new MusicGeneration(scale, new Rythm(new TimeSignature(4, 4, tempo)),10);
 	}
 	
 	public void play(){
@@ -39,7 +40,7 @@ public class PlayerAll {
 		LinkedList<RythmicNote> mg = (LinkedList<RythmicNote>) music.getMelody().getMelody().getMelody().clone();
 		th.play(music.getChords().getCollection().getChords().getHarmonizedChords());
 		tn.Create_Process(mg);
-		td.Create_Process(music.getMelody().getMelody().getMelody());
+		//td.Create_Process(music.getMelody().getMelody().getMelody());
 
 		
 	}
