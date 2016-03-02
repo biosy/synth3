@@ -108,11 +108,11 @@ public class Piano {
 	
 	}
 	
-public int getDegre(HarmonicNote fundamental){
+	public int getDegre(HarmonicNote fundamental){
 		
-	int degre=1;
-	int i=1;
-	
+		int degre=1;
+		int i=1;
+		
 		HarmonicNote har = new HarmonicNote(fundamental.getHeight());
 		HarmonicNote note = new HarmonicNote(piano.get(0).getNote().getHeight());
 		while(har.getHeight()>11)
@@ -131,4 +131,13 @@ public int getDegre(HarmonicNote fundamental){
 		return degre;
 	}
 	
+	public int getIndice(HarmonicNote note){
+		for(int i=0 ; i<120 ; i++){
+			if(note.getHeight() == piano.get(i).getNote().getHeight()){
+				return i;
+			}
+		}
+		
+		return 0;
+	}
 }

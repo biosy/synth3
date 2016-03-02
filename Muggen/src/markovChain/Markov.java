@@ -4,21 +4,21 @@ import java.util.Arrays;
 
 public class Markov {
 	
-	private int[][] matTrans;
+	private float[][] matTrans;
 	private int size;
 	public Markov(int size){
 		this.setSize(size);
-		setMatTrans(new int[size][size]);
+		setMatTrans(new float[size][size]);
 		init();
 	}
-	public int[][] getMatTrans() {
+	public float[][] getMatTrans() {
 		return matTrans;
 	}
 	
-	public int getid(int in, int out){
+	public float getid(int in, int out){
 		return matTrans[in][out];
 	}
-	public void setMatTrans(int[][] matTrans) {
+	public void setMatTrans(float[][] matTrans) {
 		this.matTrans = matTrans;
 	}
 	public int getSize() {
@@ -69,7 +69,7 @@ public class Markov {
 	}
 	
 	
-	public void addLink(int cel_debut, int cel_fin, int proba){
+	public void addLink(int cel_debut, int cel_fin, float proba){
 		matTrans[cel_debut][cel_fin] = proba;
 	}
 

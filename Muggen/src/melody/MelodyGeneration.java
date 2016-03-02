@@ -1,5 +1,6 @@
 package melody;
 
+import RythmDecomposition.RandRythm;
 import RythmDecomposition.RythmGeneration;
 import note.HarmonicNote;
 import note.RythmicNote;
@@ -40,29 +41,34 @@ public class MelodyGeneration {
 		markov.init();
 	}
 	
-	public void generate(RythmGeneration ry){
-		int time;
-		int proba=0;
-		int actu = 0;
+	public void generate(RandRythm ry){
+		float time;
+		float proba=0;
+		int actu = 1;
 		int actu1=0;
+		int is=0;
 		RythmicNote note = new RythmicNote(0, 0);
-		for(int j=0;j<ry.getRy().size();j++){
+		
+		for(int j=0;j<ry.getRythmes().size();j++){
+			is=0;
 			proba = 0;
-			time=(int)( Math.random()*100);
+			time=(float)( Math.random()*100);
 
-			for(int i=0;i<scale.getNotes().size();i++)
+			for(int i=0;i<scale.getNotes().size()+1;i++)
 			{
 				if((time>=proba)&&(time<proba+markov.getid(actu, i)))
 				{
-					note=new RythmicNote(scale.getDegree(i).getHeight(), ry.getRy().get(j));//on crï¿½er une nouvelle RythmicNote
+					is=1;
+					note=new RythmicNote(scale.getDegree(i).getHeight(), ry.getRythmes().get(j));//on crï¿½er une nouvelle RythmicNote
 					melody.add(note);//on la rajoute dans la mï¿½lodie
-					//System.out.println(note+"joué");
 					actu1=i;
 					
 				}
 				proba=proba+markov.getid(actu, i);
 				actu=actu1;
 			}
+			
+
 		}
 		
 	
@@ -89,7 +95,7 @@ public class MelodyGeneration {
 		int i=0;
 		for(i=0;i<chord.getNotes().size();i++){
 			for(j=0;j<markov.getSize();j++){
-				markov.addLink(j, p.getDegre(chord.getNotes().get(i)), 100/chord.getNotes().size());
+				markov.addLink(j, p.getDegre(chord.getNotes().get(i)), 100/(float)chord.getNotes().size());
 				//System.out.println("p("+j+","+p.getDegre(chord.getNotes().get(i))+")="+100/chord.getNotes().size());
 				//System.out.println(p.getDegre(chord.getNotes().get(1)));
 			}

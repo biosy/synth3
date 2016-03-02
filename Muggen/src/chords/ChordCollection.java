@@ -17,7 +17,7 @@ public class ChordCollection {
 	}
 	
 	public void add(Chord chord){
-		harmonizedChords.add(chord);
+		harmonizedChords.addLast(chord);
 	}
 	
 	public LinkedList<Chord> getHarmonizedChords(){

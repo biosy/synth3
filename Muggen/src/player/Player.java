@@ -7,6 +7,7 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
 
+import RythmDecomposition.RandRythm;
 import chords.Chord;
 import chords.RythmicChord;
 import rythm.Rythm;
@@ -67,13 +68,32 @@ public class Player{
 	}
 	
 	public void play(Chord chord,int nbr)throws InterruptedException {
-		
-		long timer = (long)rythm.convertTime(4);
+		long timer = (long)rythm.convertTime(8);
 		for(int i=0;i<nbr;i++){
 			for(HarmonicNote note : chord.getNotes()){
 				midiChannel.noteOn(note.getHeight(), 60);
 			}
 			TimeUnit.MILLISECONDS.sleep(timer);
+			midiChannel.allNotesOff();
+		}
+	}
+	
+	public void playSeq(Chord chord, RandRythm ry)throws InterruptedException {
+		for(int i=0;i<ry.getRythmes().size();i++){
+			for(HarmonicNote note : chord.getNotes()){
+				midiChannel.noteOn(note.getHeight(), 60);
+				
+			}
+			TimeUnit.MILLISECONDS.sleep((long)rythm.convertTime(ry.getRythmes().get(i)));
+			midiChannel.allNotesOff();
+		}
+
+		for(int i=0;i<ry.getRythmes().size();i++){
+			for(HarmonicNote note : chord.getNotes()){
+				midiChannel.noteOn(note.getHeight(), 60);
+				
+			}
+			TimeUnit.MILLISECONDS.sleep((long)rythm.convertTime(ry.getRythmes().get(i)));
 			midiChannel.allNotesOff();
 		}
 	}

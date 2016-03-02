@@ -2,6 +2,7 @@ package player;
 
 import java.util.LinkedList;
 
+import RythmDecomposition.RandRythm;
 import rythm.Rythm;
 import chords.Chord;
 /**
@@ -18,10 +19,15 @@ public class ChordPlayer extends Player implements Runnable{
 	public void run(){
 		try{
 			int i=0;
+			RandRythm ry = new RandRythm();
+			ry.RandomGeneration(6, 4);
 			while(i<10){ //Tant que la liste n'est pas vide, on la lit.
-				for(int j=0;j<chords.size();j++)
-					play(chords.get(j),1);
-				i++;
+				for(int j=0;j<chords.size();j++){
+					System.out.println(chords.get(j));
+					playSeq(chords.get(j), ry);
+					i++;
+				}
+					
 			}
 		}catch(InterruptedException e){
 			e.printStackTrace();

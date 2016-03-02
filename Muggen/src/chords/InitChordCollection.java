@@ -17,22 +17,22 @@ public class InitChordCollection {
 		//anatole
 		HarmonicNote note = new HarmonicNote(scale.getDegree(1).getHeight());
 		Chord ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(6).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("minor"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(2).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("minor"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(4).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 	}
 	
@@ -40,22 +40,22 @@ public class InitChordCollection {
 
 		HarmonicNote note = new HarmonicNote(scale.getDegree(1).getHeight());
 		Chord ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(6).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("minor"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(4).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(5).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);		
 				
 	}
@@ -64,43 +64,43 @@ public class InitChordCollection {
 				
 		HarmonicNote note = new HarmonicNote(scale.getDegree(1).getHeight());
 		Chord ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(6).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("minor"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(3).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("minor"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(5).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);		
 	}
 	public void anatole4(){	
 		HarmonicNote note = new HarmonicNote(scale.getDegree(1).getHeight());
 		Chord ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(5).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(6).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("minor"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(4).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 				
 		}
@@ -110,22 +110,22 @@ public class InitChordCollection {
 	public void christophe(){		
 		HarmonicNote note = new HarmonicNote(scale.getDegree(1).getHeight());
 		Chord ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("majse"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(1).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("domi7"));
+		ch.generateChord(note, "norm7",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(4).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("majse"));
+		ch.generateChord(note, "norm7",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(3).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("minse"));
+		ch.generateChord(note, "norm7",scale);
 		chords.add(ch);
 			
 		
@@ -135,17 +135,17 @@ public class InitChordCollection {
 	public void deux_cinq_un(){
 		HarmonicNote note = new HarmonicNote(scale.getDegree(2).getHeight());
 		Chord ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("minor"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(5).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		note = new HarmonicNote(scale.getDegree(1).getHeight());
 		ch = new Chord();
-		ch.generateChord(note, li.getIntermod().searchByNametoMod("major"));
+		ch.generateChord(note, "norma",scale);
 		chords.add(ch);
 		
 		

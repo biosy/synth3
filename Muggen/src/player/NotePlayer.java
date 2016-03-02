@@ -2,6 +2,7 @@ package player;
 
 import java.util.LinkedList;
 
+import piano.Piano;
 import note.RythmicNote;
 import rythm.Rythm;
 
@@ -21,7 +22,8 @@ public class NotePlayer extends Player implements Runnable{
 	public void run() {
 		try {
 			while(!notes.isEmpty()){ //Tant que la LinkedList n'est pas vide, on la lit.
-					play(notes.removeLast());
+					System.out.println(notes.getFirst().getHeight()+" dure :"+notes.getFirst().getDuration());
+					play(notes.removeFirst());
 			}
 		}catch(InterruptedException e){
 			e.printStackTrace();

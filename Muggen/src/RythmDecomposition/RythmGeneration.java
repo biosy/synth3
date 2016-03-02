@@ -1,7 +1,10 @@
 package RythmDecomposition;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import rythm.Rythm;
 import rythm.TimeSignature;
@@ -10,92 +13,120 @@ import markovChain.Markov;
 
 public class RythmGeneration {
 	
-	private Markov markov;
-	private LinkedList<Integer> rythm;
-	
+	private HashMap<Integer,ArrayList<ArrayList<Integer>>> list;
+	private RythmDecomposition ry;
 	public RythmGeneration(){
-		markov = new Markov(10);
-		markov.init();
-		generateDecomposition();
-		rythm = new LinkedList<Integer>();
+		ry = new RythmDecomposition();
+		list = new HashMap<Integer,ArrayList<ArrayList<Integer>>>();
+		geneAll();
 	}
 	
-	public void generateDecomposition(){
-		markov.addLink(3, 3, 100);
-		markov.addLink(4, 4, 100);
-	}
-	
-	public void gene(){
-		int tu=(int)( Math.random()*2);
-
-		if(tu ==0){
-			rythm.add(3);
-			rythm.add(3);
-
-		}
+	/*génère les décompositions primaire d'une note*/
+	public ArrayList<ArrayList<Integer>> generateDecomposition(int state){
 		
-		if(tu == 1){
-			rythm.add(4);
-		}
-	}
-	public void generate(int ntime){
-		
-		int proba;
-		int time;
-		int tu=(int)( Math.random()*2);
-		
-		
-		int actu=4;
-		int actu1 = 4;
-		if(tu ==1){
-			actu = 3;
-			actu1 = 3;
+		ArrayList<ArrayList<Integer>> li =new ArrayList<ArrayList<Integer>>();
 
-		}
-		else {
-			actu =4;
-			actu1 = 4;
-
-		}
-		TimeSignature ts = new TimeSignature(4, 4, 120);
-		System.out.println(actu);
-		float total=0;
-		for(int j=0;j<ntime;j++){
-			proba = 0;
-			while(total < 1){
-				time=(int)( Math.random()*100);
-				System.out.println(time);
-				for(int i=0;i<10;i++)
-				{						//System.out.println(total);
-
-					if((time>=proba)&&(time<proba+markov.getid(actu, i)))
-					{
-
-						if(total+ts.noteTime(i)<=1){
-							rythm.add(i);
-							actu1=i;
-							total = total + ts.noteTime(i);
-
-						}
-						
-					}
-					
-					
-					proba=proba+markov.getid(actu, i);
-					actu=actu1;
-				}	
+			for(int j=0;j<ry.getDecompo().get(state).size();j++){
+				li.add(ry.getDecompo().get(state).get(j));
 			}
+			return li;
+	}
+	
+	/*concatène deux ArrayList d'arrayList*/
+	public ArrayList<ArrayList<Integer>> concatenateDecomposition(ArrayList<ArrayList<Integer>> a, ArrayList<ArrayList<Integer>> b){
+		
+		ArrayList<ArrayList<Integer>> conc = new ArrayList<ArrayList<Integer>>();
+		ArrayList<Integer> array = new ArrayList<Integer>();
+
+		ArrayList<ArrayList<Integer>> a1 = new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Integer>> b1 = new ArrayList<ArrayList<Integer>>();
+		
+
+		for(int i=0 ; i<a.size();i++){
+			a1.add(i,(ArrayList<Integer>) a.get(i).clone());
 			
+			for(int j=0 ;j < b.size();j++){
+				b1.add(j,(ArrayList<Integer>) b.get(j).clone());
+
+				array = (ArrayList<Integer>)a1.get(i).clone();
+
+				array.addAll(b1.get(j));
+				a1.get(i).clear();
+				a1.add(i,(ArrayList<Integer>) a.get(i).clone());
+				
+				conc.add((ArrayList<Integer>)array.clone());
+				array.clear();
+				
+			}
+
+
+		}
+
+		return conc;
+		
+	}
+	
+	/*génère toutes les décompositions*/
+	private void geneAll(){
+		list.put(1, generateDecomposition(1));
+
+		ArrayList<ArrayList<Integer>> ans = new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Integer>> ones = new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Integer>> ones1 = new ArrayList<ArrayList<Integer>>();
+
+		ArrayList<ArrayList<Integer>> getList = new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Integer>> getList1 = new ArrayList<ArrayList<Integer>>();
+
+		ArrayList<Integer> one = new ArrayList<Integer>();
+
+		for(int i=2 ;i<ry.getDecompo().size()+1;i++){
+
+			for(int j = 0 ;j<ry.getDecompo().get(i).size();j++){
+				one.clear();
+				ones.clear();
+				ones1.clear();
+				if(ry.getDecompo().get(i).get(j).size()!=1){
+					
+					
+					
+					
+					getList = (ArrayList<ArrayList<Integer>>)list.get(ry.getDecompo().get(i).get(j).get(0)).clone();
+					getList1 = (ArrayList<ArrayList<Integer>>)list.get(ry.getDecompo().get(i).get(j).get(1)).clone();
+
+					
+					ans.addAll((ArrayList<ArrayList<Integer>>)concatenateDecomposition(getList, getList1).clone());
+					
+					one.clear();
+					ones.clear();
+					ones1.clear();
+					getList.clear();
+					getList1.clear();
+				}
+				
+				else{
+					one.add(0, ry.getDecompo().get(i).get(j).get(0));
+					ones.add(0, (ArrayList<Integer>)one.clone());
+					ans.addAll((ArrayList<ArrayList<Integer>>)ones.clone());
+				}
+				
+				
+			}
+
+			list.put(i, (ArrayList<ArrayList<Integer>>)ans.clone());
+			ans.clear();
+
 		}
 	}
 	
-	public void afficheEcc(){
-		for(int i=0;i<rythm.size();i++){
-			System.out.println("ec : "+rythm.get(i));
-		}
-	}
 
-	public LinkedList<Integer> getRy(){
-		return rythm;
+	@Override
+	public String toString() {
+		return "RythmGeneration [list=" + list + ", ry=" + ry + "]";
 	}
+	
+
+	public ArrayList<ArrayList<Integer>> getDecompo(int state){
+		return list.get(state);
+	}
+	
 }

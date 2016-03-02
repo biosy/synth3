@@ -2,18 +2,24 @@ package chords;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
+
+import piano.Piano;
+import scales.Scale;
 import note.HarmonicNote;
 import note.RythmicNote;
 
 
 public class Chord {
 	private ArrayList<HarmonicNote> notes;
-
+	private LoadInter inter;
 	public Chord(ArrayList<HarmonicNote> notes){
 		this.notes = notes;
+		inter = new LoadInter("chords.txt");
 	}
 	public Chord(){
 		notes = new ArrayList<HarmonicNote>();
+		inter = new LoadInter("chords.txt");
 	}
 	
 	public ArrayList<HarmonicNote> getNotes(){
@@ -56,16 +62,20 @@ public class Chord {
 		}
 	}
 	
-	public void generateChord(HarmonicNote fundamental,InterMod mod){
+	public void generateChord(HarmonicNote fundamental,String intermod, Scale scale){
+		
+		InterMod mod = inter.getIntermod().searchByNametoMod(intermod);
 		
 		int ht = fundamental.getHeight();
 		notes = new ArrayList<HarmonicNote>();// on reset la arraylist
-		
+		Piano p = new Piano(scale);
+		int j;
 		for(int i=0;i<mod.getInter().size();i++){
-			fundamental = new HarmonicNote(ht);
-			fundamental.setHeight(fundamental.getHeight()+(mod.getInter().get(i)));
-			ht = fundamental.getHeight();
-			this.notes.add(fundamental);
+			j= p.getIndice(fundamental);
+			j = j+ (mod.getInter().get(i));
+			System.out.println(j);
+			this.notes.add(new HarmonicNote(p.getPiano(j).getHeight()));
+			
 			
 		}
 		
