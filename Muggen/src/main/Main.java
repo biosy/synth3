@@ -1,102 +1,92 @@
 package main;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 
-import RythmDecomposition.RythmDecomposition;
-import RythmDecomposition.RythmGeneration;
-import chords.Chord;
-import chords.ChordGeneration;
-import chords.LoadInter;
-import player.ChordPlayer;
-import player.NotePlayer;
-import player.ThreadedChordPlayer;
-import player.ThreadedNotePlayer;
-import rythm.Rythm;
-import rythm.TimeSignature;
-import scales.Scale;
-import melody.MelodyGeneration;
-import modes.Mode;
-import musicGeneration.PlayerAll;
-import musicGeneration.PlayerType;
-import note.HarmonicNote;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MetaMessage;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.SysexMessage;
+import javax.sound.midi.Track;
 
-public class Main {
-
-	public static void main(String[] args) throws InterruptedException {
-		/*LoadInter inter = new LoadInter("chords.txt");
-		
-		inter.Load("chords.txt");
-		//System.out.println(inter);
-		InitChordCollection cg = new InitChordCollection(new Scale(new HarmonicNote(65), new Mode(2)));
-		cg.christophe();
-		
-		ChordPlayer p = new ChordPlayer(0, 0, new Rythm(new TimeSignature(4, 4, 200)));
-		p.fill(cg.getChords().getHarmonizedChords());
-		p.run();
-		
-		cg = new InitChordCollection(new Scale(new HarmonicNote(65), new Mode(2)));
-		cg.anatole1();
-		
-		p.fill(cg.getChords().getHarmonizedChords());
-		p.run();
-		
-		cg = new InitChordCollection(new Scale(new HarmonicNote(65), new Mode(2)));
-		cg.deux_cinq_un();
-		
-		p.fill(cg.getChords().getHarmonizedChords());
-		p.run();
-		
-		/*Markov mar = new Markov(10);
-		mar.addLink(0, 0, 50);
-		mar.addLink(0, 1, 50);
-		mar.addLink(1, 0, 50);
-		mar.addLink(1, 2, 50);
-		mar.addLink(2, 2, 50);
-		mar.addLink(2, 3, 50);
-		*/
+import jm.music.data.*;
+import jm.JMC;
+import jm.audio.*;
+import jm.util.*;
+ 
+public class Main implements JMC {
 	
-		/*	ChordGeneration cg = new ChordGeneration(new Scale(new HarmonicNote(60), new Mode(5)));
-			cg.aleatoryStyle();
-			Chord chord = new Chord();
-			chord = cg.getCollection().getChords().getHarmonizedChords().get(0);
+	public static void main(String[] args) throws InvalidMidiDataException, IOException {
+		Sequence s = new Sequence(javax.sound.midi.Sequence.PPQ,24);
 
-			MelodyGeneration melo = new MelodyGeneration(new Scale(new HarmonicNote(60), new Mode(5)), chord);
+//****  Obtain a MIDI track from the sequence  ****
+		Track t = s.createTrack();
 
-			ThreadedChordPlayer th = new ThreadedChordPlayer(new ChordPlayer(0, 0, new Rythm(new TimeSignature(4, 4, 120))));
-			ThreadedNotePlayer tn = new ThreadedNotePlayer(new NotePlayer(1, 80, new Rythm(new TimeSignature(4, 4, 120))));
-			RythmGeneration ry = new RythmGeneration();
-			
-			
-			//for(int size=0;size<10;size++){
-				for(int i=0;i<cg.getCollection().getChords().getHarmonizedChords().size();i++){
-					ry.generateDecomposition(4);
-					chord = cg.getCollection().getChords().getHarmonizedChords().get(i);	
-					System.out.println(chord);
+//****  General MIDI sysex -- turn on General MIDI sound set  ****
+		byte[] b = {(byte)0xF0, 0x7E, 0x7F, 0x09, 0x01, (byte)0xF7};
+		SysexMessage sm = new SysexMessage();
+		sm.setMessage(b, 6);
+		MidiEvent me = new MidiEvent(sm,(long)0);
+		t.add(me);
 
-					melo.setChord(chord);
-					melo.reinit();
+//****  set tempo (meta event)  ****
+		MetaMessage mt = new MetaMessage();
+        byte[] bt = {0x02, (byte)0x00, 0x00};
+		mt.setMessage(0x51 ,bt, 3);
+		me = new MidiEvent(mt,(long)0);
+		t.add(me);
 
-					melo.generate(ry);
-					System.out.println(melo.getMelody());
+//****  set track name (meta event)  ****
+		mt = new MetaMessage();
+		String TrackName = new String("midifile track");
+		mt.setMessage(0x03 ,TrackName.getBytes(), TrackName.length());
+		me = new MidiEvent(mt,(long)0);
+		t.add(me);
 
-					//System.out.println("0");
-				
+//****  set omni on  ****
+		ShortMessage mm = new ShortMessage();
+		mm.setMessage(0xB0, 0x7D,0x00);
+		me = new MidiEvent(mm,(long)0);
+		t.add(me);
 
-				}
+//****  set poly on  ****
+		mm = new ShortMessage();
+		mm.setMessage(0xB0, 0x7F,0x01);
+		me = new MidiEvent(mm,(long)0);
+		t.add(me);
 
-	//}
-			th.play(cg.getCollection().getChords().getHarmonizedChords());
-			tn.Create_Process(melo.getMelody().getMelody());
-*/
-	PlayerType pl = new PlayerType(0);
-	pl.randomize();
-	pl.play();
+//****  set instrument to Piano  ****
+		mm = new ShortMessage();
+		mm.setMessage(0xB0, 0x00, 0x01);
+		me = new MidiEvent(mm,(long)60);
+		t.add(me);
 
-		
-		
+//****  note on - middle C  ****
+		mm = new ShortMessage();
+		mm.setMessage(0x90,0x3C,0x60);
+		me = new MidiEvent(mm,(long)10);
+		t.add(me);
+
+//****  note off - middle C - 120 ticks later  ****
+		mm = new ShortMessage();
+		mm.setMessage(0x80,0x3C,0x40);
+		me = new MidiEvent(mm,(long)121);
+		t.add(me);
+
+//****  set end of track (meta event) 19 ticks later  ****
+		mt = new MetaMessage();
+        byte[] bet = {}; // empty array
+		mt.setMessage(0x2F,bet,0);
+		me = new MidiEvent(mt, (long)140);
+		t.add(me);
+
+//****  write the MIDI sequence to a MIDI file  ****
+		File f = new File("midifile.mid");
+		MidiSystem.write(s,1,f);
 	}
 	
 	
-	
-
 }

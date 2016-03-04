@@ -47,6 +47,7 @@ public class MelodyGeneration {
 		int actu = 1;
 		int actu1=0;
 		int is=0;
+		int octave=0;
 		RythmicNote note = new RythmicNote(0, 0);
 		
 		for(int j=0;j<ry.getRythmes().size();j++){
@@ -56,10 +57,12 @@ public class MelodyGeneration {
 
 			for(int i=0;i<scale.getNotes().size()+1;i++)
 			{
+				octave=-1+(int)( Math.random()*2);
+
 				if((time>=proba)&&(time<proba+markov.getid(actu, i)))
 				{
 					is=1;
-					note=new RythmicNote(scale.getDegree(i).getHeight(), ry.getRythmes().get(j));//on cr�er une nouvelle RythmicNote
+					note=new RythmicNote(scale.getDegree(i).getHeight()+(octave*12), ry.getRythmes().get(j));//on cr�er une nouvelle RythmicNote
 					melody.add(note);//on la rajoute dans la m�lodie
 					actu1=i;
 					

@@ -1,0 +1,15 @@
+HappyvideoGame
+0;
+0;
+1;
+5;
+120;
+2;
+
+/*name
+/*chordsinstru
+/*meloinstru
+/*mode
+/*seuil
+/*tempo
+/*id

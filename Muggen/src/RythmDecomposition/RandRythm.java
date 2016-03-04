@@ -17,7 +17,6 @@ public class RandRythm {
 		int time=2000;
 		while(rythmDec.getDecompo(nbrTimes).get(time).size()>seuil){
 			time=(int)( Math.random()*rythmDec.getDecompo(nbrTimes).size());
-			System.out.println("bijour");
 			rythmes = rythmDec.getDecompo(nbrTimes).get(time);
 		}
 		

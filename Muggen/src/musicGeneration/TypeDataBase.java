@@ -39,6 +39,7 @@ public class TypeDataBase {
 		
 			for(int i=0 ;i<files.length;i++){
 				Load(files[i]);
+				System.out.println(files[i].getPath());
 			}
 	}
 	private void Load(File file){
@@ -67,11 +68,9 @@ public class TypeDataBase {
 				switch(u){
 				case 0 :
 					name = ligne;
-					System.out.println("name");
 					break;
 					
 				case 1 :
-					System.out.println("chords");
 					i=0;
 					
 						mot = new String();
@@ -81,9 +80,7 @@ public class TypeDataBase {
 								mot = mot +ligne.charAt(i);
 
 								i++;
-								System.out.println(mot);
 
-								System.out.println(ligne.charAt(i));
 
 							}
 								
@@ -98,7 +95,6 @@ public class TypeDataBase {
 					break;
 
 				case 2 :
-					System.out.println("chords");
 					i=0;
 					
 						mot = new String();
@@ -108,9 +104,7 @@ public class TypeDataBase {
 								mot = mot +ligne.charAt(i);
 
 								i++;
-								System.out.println(mot);
-
-								System.out.println(ligne.charAt(i));
+								
 
 							}
 								

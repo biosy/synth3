@@ -37,6 +37,7 @@ public class Piano {
 			{
 				notes = new PianoNotes(scale.getNotes().get(i),degres);
 				piano.add(notes);
+
 				degres++;
 			}
 			degres=1;
@@ -111,21 +112,25 @@ public class Piano {
 	public int getDegre(HarmonicNote fundamental){
 		
 		int degre=1;
-		int i=1;
+		int i=0;
 		
 		HarmonicNote har = new HarmonicNote(fundamental.getHeight());
 		HarmonicNote note = new HarmonicNote(piano.get(0).getNote().getHeight());
-		while(har.getHeight()>11)
-		{
-			har.setHeight(har.getHeight()-12);//on descend la gamme jusqu'a obtenir la note la plus basse correspondant à la fondamental
-		}
-		//return fundamental.getHeight()-piano.get(0).getNote().getHeight();
 		
+		//return fundamental.getHeight()-piano.get(0).getNote().getHeight();
+		System.out.println(har.getHeight());
 
 		while(har.getHeight()!=note.getHeight()){
 			note.setHeight(piano.get(i).getNote().getHeight());
-			i++;
-			degre = degre+1;
+			if(har.getHeight()!=note.getHeight()){
+				i++;
+				degre = degre+1;
+			}
+				
+
+			if(degre==scale.getNotes().size()+1){
+				degre=1;
+			}
 
 		}
 		return degre;
