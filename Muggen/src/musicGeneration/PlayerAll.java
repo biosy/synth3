@@ -1,9 +1,14 @@
 package musicGeneration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.sound.midi.InvalidMidiDataException;
+
+import chords.ChordGeneration;
 import note.RythmicNote;
+import main.Recorder;
 import melody.MelodyGeneration;
 import player.ChordPlayer;
 import player.NotePlayer;
@@ -35,15 +40,14 @@ public class PlayerAll {
 		 this.instruMelody = instruMelody;
 		 this.setSeuil(seuil);
 		music = new MusicGeneration(scale, new Rythm(new TimeSignature(4, 4, tempo)),seuil);
+		music.generation();
 
 	}
 	
 	public void play(){
 		
-		music.generation();
-		LinkedList<RythmicNote> mg = (LinkedList<RythmicNote>) music.getMelody().getMelody().getMelody();
 		th.play(music.getChords().getChords());
-		tn.Create_Process(mg);
+		tn.Create_Process(music.getMelody().getMelody().getMelody());
 
 		
 	}
@@ -53,6 +57,13 @@ public class PlayerAll {
 		th.getChordPlayer().stopPlayer();
 		tn.stop();
 		tn.getChordPlayer().stopPlayer();
+
+		
+	}
+	
+	public void reload(){
+		
+		music.generation();
 
 		
 	}
@@ -99,5 +110,10 @@ public class PlayerAll {
 
 	public void setTempo(int tempo) {
 		this.tempo = tempo;
+	}
+	
+	public void save(String file) throws InvalidMidiDataException, IOException{
+		Recorder recorder = new Recorder(tn.getChordPlayer().getNotePayed(), music.getChords(), file, tempo, instruMelody, instruChord);
+		recorder.record(file);
 	}
 }

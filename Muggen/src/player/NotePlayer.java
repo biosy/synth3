@@ -8,8 +8,11 @@ import rythm.Rythm;
 
 public class NotePlayer extends Player implements Runnable{
 	LinkedList<RythmicNote> notes;
+	LinkedList<RythmicNote> notePlayed;
+
 	public NotePlayer(int channel, int instrument, Rythm rythm){
 		super(channel, instrument, rythm);
+		notePlayed = new LinkedList<RythmicNote>();
 	}
 
 	
@@ -23,6 +26,7 @@ public class NotePlayer extends Player implements Runnable{
 		try {
 			while(!notes.isEmpty()){ //Tant que la LinkedList n'est pas vide, on la lit.
 					//System.out.println(notes.getFirst().getHeight()+" dure :"+notes.getFirst().getDuration());
+					notePlayed.addLast(notes.getFirst());
 					play(notes.removeFirst());
 			}
 		}catch(InterruptedException e){
@@ -31,7 +35,8 @@ public class NotePlayer extends Player implements Runnable{
 		}
 	}
 	
-	public void interupt(){
-		
+	public LinkedList<RythmicNote> getNotePayed(){
+		return notePlayed;
 	}
+	
 }

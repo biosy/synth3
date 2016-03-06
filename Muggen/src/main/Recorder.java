@@ -1,6 +1,8 @@
 package main;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
@@ -11,6 +13,7 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Track;
 
+import note.RythmicNote;
 import rythm.Rythm;
 import rythm.TimeSignature;
 import chords.ChordGeneration;
@@ -19,14 +22,14 @@ import melody.MelodyGeneration;
 
 public class Recorder {
 	
-	private MelodyGeneration melody;
+	private LinkedList<RythmicNote> melody;
 	private ChordGeneration chords;
 	private String file;
 	private int tempo;
 	private int instrumelo;
 	private int instruChord;
 
-	public Recorder(MelodyGeneration melody, ChordGeneration chords, String file, int tempo, int instrumelo, int instruChord){
+	public Recorder(LinkedList<RythmicNote> melody, ChordGeneration chords, String file, int tempo, int instrumelo, int instruChord){
 		this.melody = melody;
 		this.chords = chords;
 		this.file = file;
@@ -35,7 +38,7 @@ public class Recorder {
 		this.instrumelo = instrumelo;
 	}
 	
-	public void record() throws InvalidMidiDataException, IOException{
+	public void record(String file) throws InvalidMidiDataException, IOException{
 		
 		Sequence s = new Sequence(javax.sound.midi.Sequence.PPQ,24);
 		Track t = s.createTrack();
@@ -103,17 +106,17 @@ public class Recorder {
 				int begin =0;
 				int end = 0;
 				Rythm ry = new Rythm(new TimeSignature(4, 4, 120));
-		for(int i=0;i<melody.getMelody().getMelody().size();i++){
+		for(int i=0;i<melody.size();i++){
 			//****  note on - middle C  ****
 			
 			mm = new ShortMessage();
-			mm.setMessage(0x90,melody.getMelody().getMelody().get(i).getHeight(),0x60);
+			mm.setMessage(0x90,melody.get(i).getHeight(),0x60);
 			me = new MidiEvent(mm,(long)begin);
 			t.add(me);
 	//****  note off - middle C - 120 ticks later  ****
-			end = end + ((int)ry.convertTime(melody.getMelody().getMelody().get(i).getDuration())/5);
+			end = end + ((int)ry.convertTime(melody.get(i).getDuration())/5);
 			mm = new ShortMessage();
-			mm.setMessage(0x80,melody.getMelody().getMelody().get(i).getHeight(),0x40);
+			mm.setMessage(0x80,melody.get(i).getHeight(),0x40);
 			me = new MidiEvent(mm,(long)end);
 			t.add(me);
 			begin = end;
@@ -173,7 +176,7 @@ public class Recorder {
 		t1.add(me);
 
 //****  write the MIDI sequence to a MIDI file  ****
-		File f = new File("midifile.mid");
+		File f = new File(file);
 		MidiSystem.write(s,1,f);
 	}
 	
