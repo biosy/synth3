@@ -1,23 +1,18 @@
 package chords;
 
+import RythmDecomposition.RandRythm;
+
 public class RythmicChord {
 	
-	private int duration;
 	private Chord chord;
+	private RandRythm randRythm;
 	
-	public RythmicChord(Chord chord, int duration){
-		this.setDuration(duration);
+	public RythmicChord(Chord chord, RandRythm randRythm){
 		this.setChord(chord);
+		this.randRythm = randRythm;
 	}
 
-	public int getDuration() {
-		return duration;
-	}
-
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-
+	
 	public Chord getChord() {
 		return chord;
 	}
@@ -26,6 +21,8 @@ public class RythmicChord {
 		this.chord = chord;
 	}
 	
-	
+	public RandRythm getRythm(){
+		return randRythm;
+	}
 
 }

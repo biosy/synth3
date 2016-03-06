@@ -1,7 +1,9 @@
 package chords;
 
+import java.util.LinkedList;
 import java.util.Random;
 
+import RythmDecomposition.RandRythm;
 import note.HarmonicNote;
 import scales.Scale;
 
@@ -9,9 +11,11 @@ public class ChordGeneration {
 	
 	private InitChordCollection ch;
 	private Scale scale;
+	private LinkedList<RythmicChord> chords;
 	public ChordGeneration(Scale scale) {
 		ch = new InitChordCollection(scale);
 		this.scale = scale;
+		chords = new LinkedList<RythmicChord>();
 	}
 	
 	
@@ -41,6 +45,16 @@ public class ChordGeneration {
 			ch.christophe();
 			break;
 		
+			
+			
+		}
+		RandRythm randRythm = new RandRythm();
+		randRythm.RandomGeneration(6, 4);
+		RythmicChord rythmChords;
+		for(int i=0;i<ch.getChords().getHarmonizedChords().size();i++){
+			rythmChords = new RythmicChord(ch.getChords().getHarmonizedChords().get(i), randRythm);
+			chords.add(rythmChords);
+			randRythm.RandomGeneration(6, 4);
 		}
 		
 	}
@@ -48,5 +62,8 @@ public class ChordGeneration {
 	public InitChordCollection getCollection(){
 		return ch;
 	}
-
+	public LinkedList<RythmicChord> getChords(){
+		return chords;
+	}
+	
 }

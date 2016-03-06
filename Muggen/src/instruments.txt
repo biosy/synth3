@@ -1,0 +1,106 @@
+Piano
+
+Acoustic Grand Piano;1;
+Bright Acoustic Piano;2;
+Electric Grand Piano;3;
+Harpsichord;7;
+Clavinet;8;
+
+Chromatic Percussion
+
+Vibraphone;12;
+Xylophone;14;
+Tubular Bells;15;
+
+Organ
+
+Percussive Organ;18;
+Rock Organ;19;
+Church Organ;20;
+Reed Organ;21;
+Accordion;22;
+Harmonica;23;
+
+Guitar
+
+Acoustic Guitar;25;
+Electric Guitar (jazz);27;
+Electric Guitar (clean);28;
+Electric Guitar (muted);29;
+Distortion Guitar;31;
+Guitar Harmonics;32;
+
+Bass
+
+Acoustic Bass;33;
+Electric Bass;34;
+Slap Bass 1;37;
+Slap Bass 2;38;
+Synth Bass;39;
+
+Strings
+
+Violin;41;
+Viola;42;
+Cello;43;
+Contrabass;44;
+Tremolo;45;
+Orchestral Harp;47;
+
+Ensemble
+
+String Ensemble;49;
+Synth Strings;51;
+Choir Aahs;53;
+Voice Oohs;54;
+Orchestra Hit;56;
+
+Brass
+
+Trumpet;57;
+Trombone;58;
+Tuba;59;
+Muted Trumpet;60;
+French Horn;61;
+Brass Section;62;
+
+Reed
+
+Soprano Sax;65;
+Alto Sax;66;
+Tenor Sax;67;
+Baritone Sax;68;
+Clarinet;72;
+
+Pipe
+
+Piccolo;73;
+Flute;74;
+Recorder;75;
+Pan Flute;76;
+Ocarina;80;
+
+Synth Lead
+
+Lead 1 (square);81;
+Lead 2 (sawtooth);82;
+Lead 3 (calliope);83;
+Lead 6 (voice);86;
+
+Synth Pad
+
+Pad 1 (new age);89;
+Pad 2 (warm);90;
+Pad 3 (polysynth);91;
+Pad 4 (choir);92;
+Pad 5 (bowed);93;
+Pad 6 (metallic);94;
+
+Synth Effects
+
+FX 1 (rain);97;
+FX 2 (soundtrack);98;
+FX 3 (crystal);99;
+FX 4 (atmosphere);100;
+FX 5 (brightness);101;
+FX 6 (goblins);102;

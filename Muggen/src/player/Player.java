@@ -44,9 +44,10 @@ public class Player{
 	
 	public void play(RythmicNote note) throws InterruptedException {
 		midiChannel.noteOn(note.getHeight(), 100);
-		TimeUnit.MILLISECONDS.sleep((long)rythm.convertTime(note.getDuration()));
+		Thread.sleep((long)rythm.convertTime(note.getDuration()));
 		midiChannel.noteOff(note.getHeight());
 
+		
 	}
 	
 	public void play(Chord chord)throws InterruptedException {
@@ -54,18 +55,11 @@ public class Player{
 		for(RythmicNote note : chord.toRythmicNote()){
 			midiChannel.noteOn(note.getHeight(), 60);
 		}
-		TimeUnit.MILLISECONDS.sleep(timer);
+		Thread.sleep(timer);
 		midiChannel.allNotesOff();
 	}
 	
-	public void play(RythmicChord chord)throws InterruptedException {
-		long timer = (long)rythm.convertTime(chord.getDuration());
-		for(HarmonicNote note : chord.getChord().getNotes()){
-			midiChannel.noteOn(note.getHeight(), 60);
-		}
-		TimeUnit.MILLISECONDS.sleep(timer);
-		midiChannel.allNotesOff();
-	}
+	
 	
 	public void play(Chord chord,int nbr)throws InterruptedException {
 		long timer = (long)rythm.convertTime(8);
@@ -73,7 +67,7 @@ public class Player{
 			for(HarmonicNote note : chord.getNotes()){
 				midiChannel.noteOn(note.getHeight(), 60);
 			}
-			TimeUnit.MILLISECONDS.sleep(timer);
+			Thread.sleep(timer);
 			midiChannel.allNotesOff();
 		}
 	}
@@ -84,7 +78,7 @@ public class Player{
 				midiChannel.noteOn(note.getHeight(), 60);
 				
 			}
-			TimeUnit.MILLISECONDS.sleep((long)rythm.convertTime(ry.getRythmes().get(i)));
+			Thread.sleep((long)rythm.convertTime(ry.getRythmes().get(i)));
 			midiChannel.allNotesOff();
 		}
 
@@ -93,11 +87,31 @@ public class Player{
 				midiChannel.noteOn(note.getHeight(), 60);
 				
 			}
-			TimeUnit.MILLISECONDS.sleep((long)rythm.convertTime(ry.getRythmes().get(i)));
+			Thread.sleep((long)rythm.convertTime(ry.getRythmes().get(i)));
 			midiChannel.allNotesOff();
 		}
 	}
 	
+	public void playRythmChords(RythmicChord rc) throws InterruptedException{
+		for(int i=0;i<rc.getRythm().getRythmes().size();i++){
+			for(HarmonicNote note : rc.getChord().getNotes()){
+				midiChannel.noteOn(note.getHeight(), 60);
+				
+			}
+			Thread.sleep((long)rythm.convertTime(rc.getRythm().getRythmes().get(i)));
+			midiChannel.allNotesOff();
+		}
+		for(int i=0;i<rc.getRythm().getRythmes().size();i++){
+			for(HarmonicNote note : rc.getChord().getNotes()){
+				midiChannel.noteOn(note.getHeight(), 60);
+				
+			}
+			Thread.sleep((long)rythm.convertTime(rc.getRythm().getRythmes().get(i)));
+			midiChannel.allNotesOff();
+		}
+		
+	}
+		
 	public void stopPlayer(){
 		
 		this.midiChannel.allNotesOff();

@@ -16,8 +16,8 @@ import scales.Scale;
 public class PlayerAll {
 	
 	private MusicGeneration music;
-	private ThreadedChordPlayer th;
-	private ThreadedNotePlayer tn;
+	private ThreadedChordPlayer th=null;
+	private ThreadedNotePlayer tn=null;
 	private ThreadedNotePlayer td;
 
 	private int instruChord;
@@ -27,11 +27,13 @@ public class PlayerAll {
 	private Scale scale;
 	public PlayerAll(Scale scale, int instruChord, int instruMelody, int seuil, int tempo){
 		this.setScale(scale);
+		
+		
 		 th = new ThreadedChordPlayer(new ChordPlayer(0, instruChord, new Rythm(new TimeSignature(4, 4, tempo))));
 		 tn = new ThreadedNotePlayer(new NotePlayer(1, instruMelody, new Rythm(new TimeSignature(4, 4, tempo))));
-		 td = new ThreadedNotePlayer(new NotePlayer(2, 0, new Rythm(new TimeSignature(4, 4, tempo))));
-
-		 this.seuil = seuil;
+		 this.instruChord = instruChord;
+		 this.instruMelody = instruMelody;
+		 this.setSeuil(seuil);
 		music = new MusicGeneration(scale, new Rythm(new TimeSignature(4, 4, tempo)),seuil);
 
 	}
@@ -39,10 +41,18 @@ public class PlayerAll {
 	public void play(){
 		
 		music.generation();
-		LinkedList<RythmicNote> mg = (LinkedList<RythmicNote>) music.getMelody().getMelody().getMelody().clone();
-		th.play(music.getChords().getCollection().getChords().getHarmonizedChords());
+		LinkedList<RythmicNote> mg = (LinkedList<RythmicNote>) music.getMelody().getMelody().getMelody();
+		th.play(music.getChords().getChords());
 		tn.Create_Process(mg);
-		//td.Create_Process(music.getMelody().getMelody().getMelody());
+
+		
+	}
+	
+	public void stop(){
+		th.stop();
+		th.getChordPlayer().stopPlayer();
+		tn.stop();
+		tn.getChordPlayer().stopPlayer();
 
 		
 	}
@@ -57,5 +67,37 @@ public class PlayerAll {
 
 	public void setScale(Scale scale) {
 		this.scale = scale;
+	}
+
+	public int getInstruMelody() {
+		return instruMelody;
+	}
+	
+	public int getInstruChord() {
+		return instruChord;
+	}
+
+	public void setInstruMelody(int instruMelody) {
+		this.instruMelody = instruMelody;
+	}
+	
+	public void setInstruChord(int instruChord) {
+		this.instruChord = instruChord;
+	}
+
+	public int getSeuil() {
+		return seuil;
+	}
+
+	public void setSeuil(int seuil) {
+		this.seuil = seuil;
+	}
+
+	public int getTempo() {
+		return tempo;
+	}
+
+	public void setTempo(int tempo) {
+		this.tempo = tempo;
 	}
 }

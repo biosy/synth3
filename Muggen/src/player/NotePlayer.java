@@ -22,12 +22,16 @@ public class NotePlayer extends Player implements Runnable{
 	public void run() {
 		try {
 			while(!notes.isEmpty()){ //Tant que la LinkedList n'est pas vide, on la lit.
-					System.out.println(notes.getFirst().getHeight()+" dure :"+notes.getFirst().getDuration());
+					//System.out.println(notes.getFirst().getHeight()+" dure :"+notes.getFirst().getDuration());
 					play(notes.removeFirst());
 			}
 		}catch(InterruptedException e){
-			e.printStackTrace();
+			//e.printStackTrace();
 		
 		}
+	}
+	
+	public void interupt(){
+		
 	}
 }

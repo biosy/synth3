@@ -26,6 +26,8 @@ public class ThreadedNotePlayer{
 	}
 	public void stop(){
 		thread.interrupt();
+		thread = new Thread(player);
+
 	}
 	
 	public NotePlayer getChordPlayer(){

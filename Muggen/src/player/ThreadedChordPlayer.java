@@ -3,6 +3,7 @@ package player;
 import java.util.LinkedList;
 
 import chords.Chord;
+import chords.RythmicChord;
 
 /**
  * @author Julien ABADJI
@@ -16,12 +17,14 @@ public class ThreadedChordPlayer{
 		thread = new Thread(player);
 	}
 	
-	public void play(LinkedList<Chord> notes){
+	public void play(LinkedList<RythmicChord> notes){
 		player.fill(notes);
 		thread.start();
+		
 	}
 	public void stop(){
 		thread.interrupt();
+		thread = new Thread(player);
 	}
 	public Player getChordPlayer(){
 		
