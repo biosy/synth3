@@ -51,11 +51,14 @@ public class ChordGeneration {
 		RandRythm randRythm = new RandRythm();
 		randRythm.RandomGeneration(6, 4);
 		RythmicChord rythmChords;
-		for(int i=0;i<ch.getChords().getHarmonizedChords().size();i++){
-			rythmChords = new RythmicChord(ch.getChords().getHarmonizedChords().get(i), randRythm);
-			chords.add(rythmChords);
-			randRythm.RandomGeneration(6, 4);
+		for(int j=0;j<10;j++){
+			for(int i=0;i<ch.getChords().getHarmonizedChords().size();i++){
+				rythmChords = new RythmicChord(ch.getChords().getHarmonizedChords().get(i), randRythm);
+				chords.add(rythmChords);
+				randRythm.RandomGeneration(6, 4);
+			}
 		}
+		
 		
 	}
 	

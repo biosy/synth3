@@ -13,21 +13,22 @@ import chords.RythmicChord;
  */
 public class ChordPlayer extends Player implements Runnable{
 	LinkedList<RythmicChord> chords;
+	LinkedList<RythmicChord> chordsPlayed;
+
 	public ChordPlayer(int channel, int instrument, Rythm rythm){
 		super(channel, instrument, rythm);
+		chordsPlayed = new LinkedList<RythmicChord>();
 	}
 	@Override
 	public void run(){
 		try{
-			int i=0;
-			while(i<10){ //Tant que la liste n'est pas vide, on la lit.
-				for(int j=0;j<chords.size();j++){
-					System.out.println(chords.get(j).getChord());
-					playRythmChords(chords.get(j));
-					i++;
+			while(!chords.isEmpty()){
+					System.out.println(chords.getFirst());
+				chordsPlayed.addLast(chords.getFirst());
+					playRythmChords(chords.removeFirst());
 				}
 					
-			}
+			
 		}catch(InterruptedException e){
 			//e.printStackTrace();
 		}
@@ -36,7 +37,10 @@ public class ChordPlayer extends Player implements Runnable{
 		this.chords = chords;
 	}
 	
-	
+	LinkedList<RythmicChord> getChordsPlayed(){
+		return chordsPlayed;
+	}
+
 
 		
 }

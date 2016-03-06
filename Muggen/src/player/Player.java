@@ -42,6 +42,7 @@ public class Player{
 		}*/
 	}
 	
+	
 	public void play(RythmicNote note) throws InterruptedException {
 		midiChannel.noteOn(note.getHeight(), 100);
 		Thread.sleep((long)rythm.convertTime(note.getDuration()));
@@ -115,5 +116,15 @@ public class Player{
 	public void stopPlayer(){
 		
 		this.midiChannel.allNotesOff();
+	}
+
+
+	public int getInstrument() {
+		return instrument;
+	}
+
+
+	public void setInstrument(int instrument) {
+		this.instrument = instrument;
 	}
 }

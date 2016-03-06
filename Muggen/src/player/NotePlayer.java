@@ -25,7 +25,7 @@ public class NotePlayer extends Player implements Runnable{
 	public void run() {
 		try {
 			while(!notes.isEmpty()){ //Tant que la LinkedList n'est pas vide, on la lit.
-					//System.out.println(notes.getFirst().getHeight()+" dure :"+notes.getFirst().getDuration());
+					System.out.println(notes.getFirst().getHeight()+" dure :"+notes.getFirst().getDuration());
 					notePlayed.addLast(notes.getFirst());
 					play(notes.removeFirst());
 			}

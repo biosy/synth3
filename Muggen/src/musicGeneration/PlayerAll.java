@@ -41,11 +41,22 @@ public class PlayerAll {
 		 this.setSeuil(seuil);
 		music = new MusicGeneration(scale, new Rythm(new TimeSignature(4, 4, tempo)),seuil);
 		music.generation();
+		this.tempo = tempo;
+		this.scale = scale;
 
 	}
 	
+	public ThreadedChordPlayer getThreadedChordPlayer(){
+		return th;
+	}
+	
+	public ThreadedNotePlayer getThreadedNotePlayer(){
+		return tn;
+	}
 	public void play(){
 		
+		 th = new ThreadedChordPlayer(new ChordPlayer(0, instruChord, new Rythm(new TimeSignature(4, 4, tempo))));
+		 tn = new ThreadedNotePlayer(new NotePlayer(1, instruMelody, new Rythm(new TimeSignature(4, 4, tempo))));
 		th.play(music.getChords().getChords());
 		tn.Create_Process(music.getMelody().getMelody().getMelody());
 

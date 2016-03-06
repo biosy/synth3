@@ -26,8 +26,10 @@ public class Main implements JMC {
 		PlayerType pl = new PlayerType(5);
 		pl.randomize();
 		pl.play();
+		//pl.getPlayerAll().stop();
+		Thread.sleep(5000);
+		pl.getPlayerAll().save("wesh.midi");
 		pl.getPlayerAll().stop();
-		
 		//pl.play();
 	}
 	
