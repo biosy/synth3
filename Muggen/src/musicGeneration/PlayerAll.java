@@ -55,6 +55,8 @@ public class PlayerAll {
 	}
 	public void play(){
 		
+		
+		reload();
 		 th = new ThreadedChordPlayer(new ChordPlayer(0, instruChord, new Rythm(new TimeSignature(4, 4, tempo))));
 		 tn = new ThreadedNotePlayer(new NotePlayer(1, instruMelody, new Rythm(new TimeSignature(4, 4, tempo))));
 		th.play(music.getChords().getChords());
@@ -73,7 +75,8 @@ public class PlayerAll {
 	}
 	
 	public void reload(){
-		
+		music.getMelody().getMelody().getMelody().clear();
+		music.getChords().getChords().clear();
 		music.generation();
 
 		

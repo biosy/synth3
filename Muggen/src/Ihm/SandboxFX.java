@@ -100,7 +100,7 @@ public class SandboxFX extends Application {
 
 		TimeSignature timeSignature = new TimeSignature(4, 4, 120);
 
-		PlayerType playerType = new PlayerType(1);
+		PlayerType playerType = new PlayerType("eglise");
 		playerType.randomize();
 		PlayerAll playerAll = playerType.getPlayerAll();
 		// new PlayerAll(new Scale(new HarmonicNote(60), new Mode(1)), 1, 1, 2,
@@ -368,7 +368,7 @@ public class SandboxFX extends Application {
 						readerBar.setVisible(true);
 						playerAll.getmusic()
 								.setMelodyLength((int) melodyLengthCombobox.getSelectionModel().getSelectedItem());
-						playerAll.reload();
+						
 						refX = YBEGIN;
 						canvas.setWidth(WIDTH);
 						canvas.setHeight(
@@ -390,7 +390,16 @@ public class SandboxFX extends Application {
 						configureReaderBar(readerBar, playerAll);
 					}
 					playerAll.play();
-
+					step = 1;
+					refX = YBEGIN;
+					staffIndex = 0;
+					timeSignatureIndex = 0;
+					canvas.setWidth(WIDTH);
+					canvas.setHeight(
+							((playerAll.getmusic().getMelody().getMelody().getMelody().size() / 18) + 2) * 160);
+					gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+					paintPartition(playerAll.getmusic().getMelody().getMelody(), gc, timeSignature);
+					configureReaderBar(readerBar, playerAll);
 					timeline.play();
 				}
 			}
@@ -600,7 +609,7 @@ public class SandboxFX extends Application {
 						readerBar.setVisible(true);
 						playerAll.getmusic()
 								.setMelodyLength((int) melodyLengthCombobox.getSelectionModel().getSelectedItem());
-						playerAll.reload();
+						
 						refX = YBEGIN;
 						canvas.setWidth(WIDTH);
 						canvas.setHeight(
@@ -636,6 +645,16 @@ public class SandboxFX extends Application {
 						configureReaderBar(readerBar, playerAll);
 					}
 					playerAll.play();
+					step = 1;
+					refX = YBEGIN;
+					staffIndex = 0;
+					timeSignatureIndex = 0;
+					canvas.setWidth(WIDTH);
+					canvas.setHeight(
+							((playerAll.getmusic().getMelody().getMelody().getMelody().size() / 18) + 2) * 160);
+					gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+					paintPartition(playerAll.getmusic().getMelody().getMelody(), gc, timeSignature);
+					configureReaderBar(readerBar, playerAll); 
 
 					timeline.play();
 				}
@@ -1068,16 +1087,16 @@ public class SandboxFX extends Application {
 		File options = null;
 		switch (type) {
 		case 0:
-			options = new File("src/instruments.txt");
+			options = new File("instruments.txt");
 			break;
 		case 1:
-			options = new File("src/modes.txt");
+			options = new File("modes.txt");
 			break;
 		case 2:
-			options = new File("src/harmonics.txt");
+			options = new File("harmonics.txt");
 			break;
 		default:
-			options = new File("src/instruments.txt");
+			options = new File("instruments.txt");
 		}
 
 		Scanner scan = null;

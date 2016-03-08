@@ -57,7 +57,7 @@ public class MelodyGeneration {
 
 			for(int i=0;i<scale.getNotes().size()+1;i++)
 			{
-				octave=-1+(int)( Math.random()*2);
+				octave=(int)( Math.random());
 
 				if((time>=proba)&&(time<proba+markov.getid(actu, i)))
 				{

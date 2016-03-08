@@ -1,0 +1,12 @@
+Do (lydien);1;
+Re (phrygien);2;
+Mi (dorien);3;
+Fa (hypolydien);4;
+Sol (hypophrygien);5;
+La (hypodorien);6;
+Si (mixolydien);7;
+Pentat. major (jazzy);8;
+Pentat. minor (bluezy);9;
+G. blues;10;
+G. minor mld. asc.;11;
+G. minor hamq.;12;
