@@ -16,12 +16,12 @@ import com.sun.org.apache.xpath.internal.operations.Mod;
 import chords.InterMod;
 
 public class TypeDataBase {
-	private HashMap<Integer, Type> typeDb;
+	private HashMap<String, Type> typeDb;
 	private String folder;
 	
 	
 	public TypeDataBase(){
-		typeDb = new HashMap<Integer, Type>();
+		typeDb = new HashMap<String, Type>();
 		folder = "types";
 		rechRecFolder();
 	}
@@ -167,7 +167,7 @@ public class TypeDataBase {
 				u++;
 			}
 
-			typeDb.put(id, new Type(instruMelody, instruChords, seuil, mode, tempo, name));
+			typeDb.put(name, new Type(instruMelody, instruChords, seuil, mode, tempo, name));
 
 			br.close(); 
 		}		
@@ -176,7 +176,7 @@ public class TypeDataBase {
 		}
 	}
 	
-	public HashMap<Integer, Type> getDatabase(){
+	public HashMap<String, Type> getDatabase(){
 		return typeDb;
 	}
 

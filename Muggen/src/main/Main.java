@@ -23,13 +23,14 @@ import jm.util.*;
 public class Main implements JMC {
 	
 	public static void main(String[] args) throws InvalidMidiDataException, IOException, InterruptedException {
-		PlayerType pl = new PlayerType(5);
+		PlayerType pl = new PlayerType(6);
 		pl.randomize();
 		pl.play();
 		//pl.getPlayerAll().stop();
-		Thread.sleep(5000);
-		pl.getPlayerAll().save("wesh.midi");
+		pl.getPlayerAll().setInstruMelody(0);
 		pl.getPlayerAll().stop();
+		pl.play();
+		pl.getPlayerAll().save("wesh.midi");
 		//pl.play();
 	}
 	

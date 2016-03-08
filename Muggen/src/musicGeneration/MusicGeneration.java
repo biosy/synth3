@@ -70,6 +70,12 @@ public class MusicGeneration {
 			return melody;
 		}
 
+
+		public void setMelodyLength(int selectedItem) {
+			// TODO Auto-generated method stub
+			
+		}
+
 	}
 	
 

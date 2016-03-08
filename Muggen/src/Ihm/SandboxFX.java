@@ -1,9 +1,13 @@
 package Ihm;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
+import javax.sound.midi.InvalidMidiDataException;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
@@ -33,11 +37,14 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import melody.Melody;
 import modes.Mode;
 import musicGeneration.PlayerAll;
+import musicGeneration.PlayerType;
 import note.HarmonicNote;
 import note.RythmicNote;
 import rythm.TimeSignature;
@@ -45,7 +52,7 @@ import scales.Scale;
 
 public class SandboxFX extends Application {
 
-	static final Image SOL_KEY = new Image("habla.txt");
+	static final Image SOL_KEY = new Image("notes pictures/sol key.png");
 	static final Image FA_KEY = new Image("notes pictures/fa key.png");
 
 	static final Image BLACK = new Image("notes pictures/black.png");
@@ -82,6 +89,7 @@ public class SandboxFX extends Application {
 	private float[] timeSignatureOnEndOfAStaff = new float[STAFFNUMBER];
 	private Timeline timeline = new Timeline();
 	private int staffIndex = 0;
+	private int step = 0;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -92,7 +100,11 @@ public class SandboxFX extends Application {
 
 		TimeSignature timeSignature = new TimeSignature(4, 4, 120);
 
-		PlayerAll playerAll = new PlayerAll(new Scale(new HarmonicNote(63), new Mode(1)), 3, 18, 2, 120);
+		PlayerType playerType = new PlayerType(1);
+		playerType.randomize();
+		PlayerAll playerAll = playerType.getPlayerAll();
+		// new PlayerAll(new Scale(new HarmonicNote(60), new Mode(1)), 1, 1, 2,
+		// 120);
 
 		// playerAll.play();
 
@@ -111,7 +123,8 @@ public class SandboxFX extends Application {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
 		// partition painting
-		paintPartition(playerAll.getmusic().getMelody().getMelody(), gc, timeSignature);
+		// paintPartition(playerAll.getMusic().getMelody().getMelody(), gc,
+		// timeSignature);
 
 		// picture of the readerbar loading
 		ImageView readerBar = new ImageView("notes pictures/readerBar.png");
@@ -133,6 +146,9 @@ public class SandboxFX extends Application {
 		partitionStackPane.getChildren().add(canvas);
 		partitionStackPane.getChildren().add(readerBar);
 
+		staffBuilder(YBEGIN, YDISTANCE_BETWEEN_STAFF, gc, 2, timeSignature);
+		readerBar.setVisible(false);
+
 		// Advanced tab Elements ---------------------------------------------
 		// Fundamental part-----------------------------
 		Label fundamentalLabel = new Label("Fundamental");
@@ -143,10 +159,17 @@ public class SandboxFX extends Application {
 		fundamentalCombobox.setTranslateX(80);
 		fundamentalCombobox.setTranslateY(2);
 		fundamentalCombobox.setPrefWidth(140);
-		fundamentalCombobox.getItems().addAll("Do", "Re", "Mi", "Fa", "Sol", "La", "Si");
+		fundamentalCombobox.getItems().addAll("Do", "Do#", "Re", "Re#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#",
+				"Si");
 		fundamentalCombobox.getSelectionModel().selectFirst();
 		fundamentalCombobox.setTooltip(new Tooltip("Select the fundamental note"));
-	
+		fundamentalCombobox.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+
+			}
+		});
+
 		// Melody length part--------------------------
 		Label melodyLengthLabel = new Label("Melody Length");
 		melodyLengthLabel.setTranslateX(18);
@@ -159,6 +182,13 @@ public class SandboxFX extends Application {
 		melodyLengthCombobox.getItems().addAll(20, 50, 100, 200);
 		melodyLengthCombobox.setTooltip(new Tooltip("Select the melody length, in measure"));
 		melodyLengthCombobox.getSelectionModel().selectFirst();
+		melodyLengthCombobox.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				playerAll.getmusic().setMelodyLength((int) melodyLengthCombobox.getSelectionModel().getSelectedItem());
+
+			}
+		});
 
 		// Melody instrument part--------------------------
 		Label melodyInstruLabel = new Label("Melody instrument");
@@ -183,8 +213,16 @@ public class SandboxFX extends Application {
 				"FX 4 (atmosphere)", "FX 5 (brightness)", "FX 6 (goblins)");
 		melodyInstruCombobox.setTooltip(new Tooltip("Select the Instruments for the melody"));
 		melodyInstruCombobox.getSelectionModel().selectFirst();
+		melodyInstruCombobox.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				playerAll.setInstruMelody(
+						getElementID((String) melodyInstruCombobox.getSelectionModel().getSelectedItem(), 0));
+				System.out.println(getElementID((String) melodyInstruCombobox.getSelectionModel().getSelectedItem(), 0)
+						+ " " + (String) melodyInstruCombobox.getSelectionModel().getSelectedItem());
+			}
+		});
 
-		//playerAll.setInstruMelody(melodyInstruCombobox.getValue());
 		// Tempo part ---------------------------------
 		Label tempoLabel = new Label("Tempo");
 		tempoLabel.setTranslateX(118);
@@ -196,7 +234,7 @@ public class SandboxFX extends Application {
 		tempoTextField.setPrefWidth(100);
 		tempoTextField.setTooltip(new Tooltip("Select the number of note per minute"));
 
-				// Chords length part -----------------------
+		// Chords length part -----------------------
 		Label chordsLengthLabel = new Label("Chords Length");
 		chordsLengthLabel.setTranslateX(18);
 		chordsLengthLabel.setTranslateY(22);
@@ -208,7 +246,12 @@ public class SandboxFX extends Application {
 		chordsLengthCombobox.getItems().addAll(20, 50, 100, 200);
 		chordsLengthCombobox.getSelectionModel().selectFirst();
 		chordsLengthCombobox.setTooltip(new Tooltip("Select the chords length, in measure"));
+		chordsLengthCombobox.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
 
+			}
+		});
 		// Chords instruments part -----------------------
 		Label chordsInstruLabel = new Label("Chords instrument");
 		chordsInstruLabel.setTranslateX(118);
@@ -232,45 +275,14 @@ public class SandboxFX extends Application {
 				"FX 4 (atmosphere)", "FX 5 (brightness)", "FX 6 (goblins)");
 		chordsInstruCombobox.setTooltip(new Tooltip("Select the chords's instrument"));
 		chordsInstruCombobox.getSelectionModel().selectFirst();
-	
-		/*look at magle*/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
+		chordsInstruCombobox.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				playerAll.setInstruChord(
+						getElementID((String) chordsInstruCombobox.getSelectionModel().getSelectedItem(), 0));
 
-		playerAll.setInstruMelody(60);
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
-		/******************************************/
+			}
+		});
 
 		// Mode part -----------------------
 		Label modeLabel = new Label("Mode");
@@ -286,6 +298,12 @@ public class SandboxFX extends Application {
 				"Pentat. minor (bluezy)", "G. blues", "G. minor mld. asc.", "G. minor hamq.");
 		modeCombobox.setTooltip(new Tooltip("Select the Interval of tons"));
 		modeCombobox.getSelectionModel().selectFirst();
+		modeCombobox.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+
+			}
+		});
 
 		// threshold part ---------------------------------
 		Label thresholdLabel = new Label("Threshold");
@@ -300,6 +318,13 @@ public class SandboxFX extends Application {
 		thresholdCombobox.getSelectionModel().selectFirst();
 		thresholdCombobox.setTooltip(
 				new Tooltip("Note decomposition threshold, high means a lot of triple, low means more white or round"));
+		thresholdCombobox.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				playerAll.setSeuil((int) thresholdCombobox.getSelectionModel().getSelectedItem());
+
+			}
+		});
 
 		// TextField for "save as..."
 		TextField saveAsTextField = new TextField("MusicSheet");
@@ -320,13 +345,52 @@ public class SandboxFX extends Application {
 					playerAll.stop();
 					timeline.pause();
 				} else {
-					playerAll.play();
-					canvas.setWidth(WIDTH);
-					canvas.setHeight(
-							((playerAll.getmusic().getMelody().getMelody().getMelody().size() / 18) + 2) * 160);
+					if (step == 0) {
+						step = 1;
+						playerAll
+								.setScale(
+										new Scale(
+												new HarmonicNote(getElementID((String) fundamentalCombobox
+														.getSelectionModel().getSelectedItem(), 2)),
+								new Mode(
+										getElementID((String) modeCombobox.getSelectionModel().getSelectedItem(), 1))));
+						playerAll.setInstruMelody(
+								getElementID((String) melodyInstruCombobox.getSelectionModel().getSelectedItem(), 0));
 
-					paintPartition(playerAll.getmusic().getMelody().getMelody(), gc, timeSignature);
-					configureReaderBar(readerBar, playerAll);
+						playerAll.setInstruChord(
+								getElementID((String) chordsInstruCombobox.getSelectionModel().getSelectedItem(), 0));
+						playerAll.setSeuil((int) thresholdCombobox.getSelectionModel().getSelectedItem());
+						try{
+							playerAll.setTempo(Integer.valueOf(tempoTextField.getText()));
+						}catch(NumberFormatException eee){
+							tempoTextField.setText("Number");
+						}
+						readerBar.setVisible(true);
+						playerAll.getmusic()
+								.setMelodyLength((int) melodyLengthCombobox.getSelectionModel().getSelectedItem());
+						playerAll.reload();
+						refX = YBEGIN;
+						canvas.setWidth(WIDTH);
+						canvas.setHeight(
+								((playerAll.getmusic().getMelody().getMelody().getMelody().size() / 18) + 2) * 160);
+						gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+						paintPartition(playerAll.getmusic().getMelody().getMelody(), gc, timeSignature);
+						configureReaderBar(readerBar, playerAll);
+					}
+					if (step == 2) {
+						step = 1;
+						refX = YBEGIN;
+						staffIndex = 0;
+						timeSignatureIndex = 0;
+						canvas.setWidth(WIDTH);
+						canvas.setHeight(
+								((playerAll.getmusic().getMelody().getMelody().getMelody().size() / 18) + 2) * 160);
+						gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+						paintPartition(playerAll.getmusic().getMelody().getMelody(), gc, timeSignature);
+						configureReaderBar(readerBar, playerAll);
+					}
+					playerAll.play();
+
 					timeline.play();
 				}
 			}
@@ -340,7 +404,23 @@ public class SandboxFX extends Application {
 		reloadModificationButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
+				playerAll.setScale(new Scale(
+						new HarmonicNote(
+								getElementID((String) fundamentalCombobox.getSelectionModel().getSelectedItem(), 2)),
+						new Mode(getElementID((String) modeCombobox.getSelectionModel().getSelectedItem(), 1))));
+				try{
+					playerAll.setTempo(Integer.valueOf(tempoTextField.getText()));
+				}catch(NumberFormatException eee){
+					tempoTextField.setText("Number");
+				}
+				readerBar.setVisible(true);
 
+				playerAll.reload();
+				refX = YBEGIN;
+				step = 2;
+				refX = YBEGIN;
+				staffIndex = 0;
+				timeSignatureIndex = 0;
 			}
 		});
 
@@ -497,13 +577,66 @@ public class SandboxFX extends Application {
 					playerAll.stop();
 					timeline.pause();
 				} else {
-					playerAll.play();
-					canvas.setWidth(WIDTH);
-					canvas.setHeight(
-							((playerAll.getmusic().getMelody().getMelody().getMelody().size() / 18) + 2) * 160);
+					if (step == 0) {
+						step = 1;
+						playerAll
+								.setScale(
+										new Scale(
+												new HarmonicNote(getElementID((String) fundamentalCombobox
+														.getSelectionModel().getSelectedItem(), 2)),
+								new Mode(
+										getElementID((String) modeCombobox.getSelectionModel().getSelectedItem(), 1))));
+						playerAll.setInstruMelody(
+								getElementID((String) melodyInstruCombobox.getSelectionModel().getSelectedItem(), 0));
+						playerAll.setInstruChord(
+								getElementID((String) chordsInstruCombobox.getSelectionModel().getSelectedItem(), 0));
+						playerAll.setSeuil((int) thresholdCombobox.getSelectionModel().getSelectedItem());
+						try{
+						playerAll.setTempo(Integer.valueOf(tempoTextField.getText()));
+						}catch(NumberFormatException eeeee){
+							playerAll.setTempo(120);
+							tempoTextField.setText("number");
+						}
+						readerBar.setVisible(true);
+						playerAll.getmusic()
+								.setMelodyLength((int) melodyLengthCombobox.getSelectionModel().getSelectedItem());
+						playerAll.reload();
+						refX = YBEGIN;
+						canvas.setWidth(WIDTH);
+						canvas.setHeight(
+								((playerAll.getmusic().getMelody().getMelody().getMelody().size() / 18) + 2) * 160);
+						gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+						paintPartition(playerAll.getmusic().getMelody().getMelody(), gc, timeSignature);
+						configureReaderBar(readerBar, playerAll);
+						System.out
+								.println(
+										"Configuré pour: harmonie "
+												+ getElementID((String) fundamentalCombobox.getSelectionModel()
+														.getSelectedItem(), 2)
+												+ " en mode "
+												+ getElementID(
+														(String) modeCombobox.getSelectionModel().getSelectedItem(), 1)
+								+ "Avec pour instrument mélodique "
+								+ (String) melodyInstruCombobox.getSelectionModel().getSelectedItem()
+								+ " et pour instrument d'accords "
+								+ (String) chordsInstruCombobox.getSelectionModel().getSelectedItem()
+								+ " et un seuil de " + (int) thresholdCombobox.getSelectionModel().getSelectedItem());
 
-					paintPartition(playerAll.getmusic().getMelody().getMelody(), gc, timeSignature);
-					configureReaderBar(readerBar, playerAll);
+					}
+					if (step == 2) {
+						step = 1;
+						refX = YBEGIN;
+						staffIndex = 0;
+						timeSignatureIndex = 0;
+						canvas.setWidth(WIDTH);
+						canvas.setHeight(
+								((playerAll.getmusic().getMelody().getMelody().getMelody().size() / 18) + 2) * 160);
+						gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+						paintPartition(playerAll.getmusic().getMelody().getMelody(), gc, timeSignature);
+						configureReaderBar(readerBar, playerAll);
+					}
+					playerAll.play();
+
 					timeline.play();
 				}
 			}
@@ -575,13 +708,13 @@ public class SandboxFX extends Application {
 
 		// Right Tab Advanced-----------------------------------------
 		Tab advancedPane = new Tab();
-		advancedPane.setText("Advanced");
+		advancedPane.setText("Common");
 		advancedPane.setClosable(false);
 		advancedPane.setStyle("-fx-background-color: #F4F4F4;");
 		advancedPane.setContent(advancedGridPane);
 
 		// adding elements in each other-------------------------------
-		superiorPartTabbedPane.getTabs().addAll(stylePane, advancedPane);
+		superiorPartTabbedPane.getTabs().addAll( advancedPane,stylePane);
 
 		// Menu part--------------------------------------------
 		final Menu file = new Menu("File");
@@ -590,11 +723,28 @@ public class SandboxFX extends Application {
 		export.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				System.out.println("Export to .WAV");
+				System.out.println("Export to .MIDI");
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.getExtensionFilters().addAll(new ExtensionFilter("MIDI Files", "*.MIDI"));
+				fileChooser.setTitle("Save file");
+				fileChooser.setInitialFileName("CompositionWork.midi");
+				File savedFile = fileChooser.showSaveDialog(null);
+				if (savedFile != null) {
+					 try {
+					 playerAll.save(savedFile.getPath());
+					 }catch(IOException ee) {
+					 ee.printStackTrace();
+					 return;
+					 } catch (InvalidMidiDataException e1) {
+
+						e1.printStackTrace();
+					}
+				} else {
+				}
 			}
 		});
 		file.getItems().add(export);
-		export.setGraphic(new ImageView(new Image("wav.png")));
+		export.setGraphic(new ImageView(new Image("notes pictures/midi.png")));
 		MenuBar menuBar = new MenuBar();
 		menuBar.getMenus().add(file);
 
@@ -602,7 +752,9 @@ public class SandboxFX extends Application {
 		globalVBox.getChildren().addAll(menuBar, superiorPartTabbedPane, scrollPane);
 
 		// The scene is added to the primary stage, showed after ------------
+
 		primaryStage.setScene(scene);
+		primaryStage.getIcons().add(new Image("Logo JAlto.png"));
 		primaryStage.show();
 	}
 
@@ -643,6 +795,7 @@ public class SandboxFX extends Application {
 			}
 
 		}
+		staffCounter = 0;
 		System.out.println("total : " + timeSignatureIndex + " end of first staff : " + timeSignatureOnEndOfAStaff[0]
 				+ " end of second staff : " + timeSignatureOnEndOfAStaff[1] + " end of third staff : "
 				+ timeSignatureOnEndOfAStaff[2] + " end of fourth staff : " + timeSignatureOnEndOfAStaff[3]);
@@ -872,13 +1025,13 @@ public class SandboxFX extends Application {
 	}
 
 	private void configureReaderBar(ImageView readerBar, PlayerAll playerAll) {
-		readerBar.setTranslateX(-WIDTH / 2 + YBEGIN);
+		readerBar.setTranslateX(-WIDTH / 2 - 70);
 		readerBar
 				.setTranslateY(-(((playerAll.getmusic().getMelody().getMelody().getMelody().size() / 18) + 2) * 160) / 2
 						+ YBEGIN + 30 + 30);
 
 		// Timeline is the animation of the readerbar ----------------------
-		timeline = new Timeline();
+		timeline.getKeyFrames().clear();
 		timeline.getKeyFrames()
 				.add(new KeyFrame(Duration.ZERO, new KeyValue(readerBar.translateXProperty(), -300 + YBEGIN)));
 
@@ -906,5 +1059,41 @@ public class SandboxFX extends Application {
 			}
 		});
 
+	}
+
+	/*
+	 * 0 -> instrument 1 -> mode 2 -> Harmonics
+	 */
+	public int getElementID(String mode, int type) {
+		File options = null;
+		switch (type) {
+		case 0:
+			options = new File("src/instruments.txt");
+			break;
+		case 1:
+			options = new File("src/modes.txt");
+			break;
+		case 2:
+			options = new File("src/harmonics.txt");
+			break;
+		default:
+			options = new File("src/instruments.txt");
+		}
+
+		Scanner scan = null;
+		try {
+			scan = new Scanner(options);
+			scan.useDelimiter(";|\n");
+			while (scan.hasNext()) {
+				if (scan.next().equals(mode)) {
+					int id = scan.nextInt();
+					return id;
+				}
+			}
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		scan.close();
+		return 10000;
 	}
 }

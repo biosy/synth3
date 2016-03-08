@@ -24,6 +24,9 @@ public class PlayerType {
 		pA.play();
 	}
 	
+	public void setType(int type){
+		this.type = type;
+	}
 	public PlayerAll getPlayerAll(){
 		return pA;
 	}
