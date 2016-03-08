@@ -24,6 +24,8 @@ public class ChordPlayer extends Player implements Runnable{
 		try{
 			while(!chords.isEmpty()){
 					System.out.println(chords.getFirst().getChord());
+					System.out.println(chords.getFirst().getChord().getName());
+
 				chordsPlayed.addLast(chords.getFirst());
 					playRythmChords(chords.removeFirst());
 				}

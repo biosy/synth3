@@ -77,6 +77,8 @@ public class PlayerAll {
 	public void reload(){
 		music.getMelody().getMelody().getMelody().clear();
 		music.getChords().getChords().clear();
+		music = new MusicGeneration(scale, new Rythm(new TimeSignature(4, 4, tempo)),seuil);
+
 		music.generation();
 
 		

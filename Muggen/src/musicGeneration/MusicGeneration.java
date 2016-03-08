@@ -35,7 +35,7 @@ public class MusicGeneration {
 	
 	
 	public void generation(){
-
+		cg.aleatoryStyle();
 		Chord chord = new Chord();
 		RandRythm rand = new RandRythm();
 		for(int size=0;size<10;size++){
@@ -50,9 +50,9 @@ public class MusicGeneration {
 				melody.generate(rand);
 				rand.RandomGeneration(6,seuil);
 				melody.generate(rand);
-				System.out.println(rand.getRythmes());
+				//System.out.println(rand.getRythmes());
 
-				System.out.println(melody.getMelody());
+				//System.out.println(melody.getMelody());
 
 				//System.out.println("0");
 			
