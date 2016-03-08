@@ -7,8 +7,8 @@ import scales.Scale;
 public class PlayerType {
 	private PlayerAll pA;
 	private TypeDataBase datab;
-	private int type;
-	public PlayerType(int type){
+	private String type;
+	public PlayerType(String type){
 		datab = new TypeDataBase();
 		this.type = type;
 	}
@@ -24,7 +24,7 @@ public class PlayerType {
 		pA.play();
 	}
 	
-	public void setType(int type){
+	public void setType(String type){
 		this.type = type;
 	}
 	public PlayerAll getPlayerAll(){

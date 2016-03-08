@@ -23,7 +23,7 @@ import jm.util.*;
 public class Main implements JMC {
 	
 	public static void main(String[] args) throws InvalidMidiDataException, IOException, InterruptedException {
-		PlayerType pl = new PlayerType(6);
+		PlayerType pl = new PlayerType("salut");
 		pl.randomize();
 		pl.play();
 		//pl.getPlayerAll().stop();
